@@ -1,0 +1,35 @@
+version: '3.4'
+
+services:
+  sample.webapi:
+    image: ${DOCKER_REGISTRY-}samplewebapi
+    build:
+      context: .
+      dockerfile: Sample.WebApi/Dockerfile
+    container_name: "sample.webapi"
+    networks:
+      - test-bridge
+           
+  sample.client:
+    image: ${DOCKER_REGISTRY-}sampleclient
+    build:
+      context: .
+      dockerfile: Sample.Client/Dockerfile
+    networks:
+     - test-bridge
+
+  redis:
+    image: redis
+    networks:
+     - test-bridge
+
+
+networks:
+  test-bridge:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: "192.168.220.0/16"
+
+
+  
